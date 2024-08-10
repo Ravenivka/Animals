@@ -1,0 +1,3 @@
+SELECT * FROM donkeys
+UNION
+SELECT * FROM horses;
