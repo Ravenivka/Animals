@@ -1,9 +1,0 @@
-ID	Name	Type	BirthDate	Commands
-1	Thunder	Horse	2015-07-21	Trot, Canter, Gallop
-2	Sandy	Camel	2016-11-03	Walk, Carry Load
-3	Eeyore	Donkey	2017-09-18	Walk, Carry Load, Bray
-4	Storm	Horse	2014-05-05	Trot, Canter
-5	Dune	Camel	2018-12-12	Walk, Sit
-6	Burro	Donkey	2019-01-23	Walk, Bray, Kick
-7	Blaze	Horse	2016-02-29	Trot, Jump, Gallop
-8	Sahara	Camel	2015-08-14	Walk, Run
