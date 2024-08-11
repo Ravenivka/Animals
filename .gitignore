@@ -1,1 +1,4 @@
 *.docx
+.vscode/
+.fake
+notes3.txt
