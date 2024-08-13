@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class CSVmanager {
     private String filename ;
     private ArrayList<String> titles;
+    private ArrayList<ArrayList<String>> listValue;
 
     public  CSVmanager(String path){
     //_______________________________________________________________________________-не самый удачный путь, лучше решать через конфиг или .pom файл    
@@ -48,17 +49,27 @@ public class CSVmanager {
             System.out.println(ex.getMessage());
         } 
     //____________________________________________________________________________________________________________________________________________конец блока вычисления пути к файлам CSV
-    ArrayList<String> list = listing();
-    this.titles = StringToList(list.get(0));
-       
+        ArrayList<String> list = listing();
+        this.titles = StringToList(list.get(0));
+        this.listValue = valueList(list)  ; 
     } 
+
+    private ArrayList<ArrayList<String>> valueList(ArrayList<String> value){
+        ArrayList<ArrayList<String>> array = new ArrayList<>();
+        for (int i = 1; i < value.size(); i++){
+            String s = value.get(i);
+            ArrayList<String> l = StringToList(s);
+            array.add(l);
+        }
+        return array;
+    }
     
     private ArrayList<String> StringToList(String input){
         String[] array = input.split(";");
         ArrayList<String> aList = new ArrayList<>();
         for (String string : array) {
-            String result = string.replaceAll("^\"+|\"+$", "").trim();
-            aList.add(result) ;
+            //String result = string.replaceAll("^\"+|\"+$", "").trim();
+            aList.add(string) ;
         }
         return aList;
     }
@@ -92,6 +103,12 @@ public class CSVmanager {
     public ArrayList<String> getTitles(){
         return this.titles;
     }
+    public void setValueArray(ArrayList<ArrayList<String>> value){
+        this.listValue = value;
+    }
 
+    public ArrayList<ArrayList<String>> getValueArray(){
+        return this.listValue;
+    }
 
 }
