@@ -1,4 +1,4 @@
-"Id";"Genus_name";"Class_id"
-1;"Кошки";2
-2;"Собаки";2
-3;"Хомяки";2
+"Id";"Genus_name";"Class_id";"Table_name"
+1;"Кошки";2;"cats.csv"
+2;"Собаки";2;"dogs.csv"
+3;"Хомяки";2;"hamsters.csv"

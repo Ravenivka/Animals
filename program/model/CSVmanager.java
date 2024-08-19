@@ -68,7 +68,7 @@ public class CSVmanager {
         String[] array = input.split(";");
         ArrayList<String> aList = new ArrayList<>();
         for (String string : array) {
-            //String result = string.replaceAll("^\"+|\"+$", "").trim();
+            
             aList.add(string) ;
         }
         return aList;

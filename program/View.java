@@ -60,7 +60,8 @@ public class View {
         System.out.println("2 - сортировка по имени");
         System.out.println("3 - сортировка по возрасту");
         System.out.println("Введите номер");
-        String number = scanner.nextLine();
+        String number = scanner.nextLine();        
+        doList(number);
         
     }
 
@@ -92,13 +93,15 @@ public class View {
         System.exit(0);
     }
     
-    private void doList() {
-        System.out.println(presenter.showList());
+    private void doList(String index) {
+        System.out.println(presenter.showList(index));
     }
 
     private void doAdd() {
         System.out.println("Введите имя");
         String animalName = scanner.nextLine();
+        System.out.println("Выберите класс животного");
+        System.out.println(presenter.showClassList());
         System.out.println("Выберите тип животного");
         System.out.println(presenter.showType());
         System.out.println("Введите номер");
@@ -111,7 +114,7 @@ public class View {
     }
    
     private void doselect() { //назначить активное животное
-        System.out.println(presenter.showList());
+        System.out.println(presenter.showList("1"));
         System.out.println("Введите номер");
         String number = scanner.nextLine();
         System.out.println(presenter.setActive(number));        

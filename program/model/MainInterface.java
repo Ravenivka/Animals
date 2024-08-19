@@ -1,12 +1,10 @@
 package model;
 public interface MainInterface {
 
-    String getName();
-    String select(); // - выбор животного  
+    String getName();    
     String getAge();
     String getInfo();
-    String getCommands();
-    String setCommand();
-    String showCount();
-    String showList(); // - список животных
+    String showCommands();
+    String setCommand(String value);    
+   
 }
