@@ -35,6 +35,13 @@ public class Horse extends PackAnimal{
         Period period = Period.between(LocalDate.now(), birthDay);
         return String.format("%d", period.getMonths());
     }
+    public void setBirthDate(LocalDate value){
+        this.birthDay = value;
+    }
+
+    public void setGender (Gender gender) {
+        this.sex = gender;
+    }
 
     public String toString() {
         String string = "";

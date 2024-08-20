@@ -98,19 +98,28 @@ public class View {
     }
 
     private void doAdd() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         System.out.println("Введите имя");
         String animalName = scanner.nextLine();
-        System.out.println("Выберите класс животного");
+        System.out.println("Введите пол (м/ж)");
+        String gender = scanner.nextLine();
         System.out.println(presenter.showClassList());
-        System.out.println("Выберите тип животного");
-        System.out.println(presenter.showType());
-        System.out.println("Введите номер");
-        String typeNumber = scanner.nextLine();
-        System.out.println("Выберите дату рождения животного (ГГГГ-ММ-ДД)");
-        String birthDate = scanner.nextLine();
-        System.out.println("Введите список комманд животного (через запятую)");
-        String comList = scanner.nextLine();
-        System.out.println(presenter.createAnimal(animalName, typeNumber, birthDate,  comList));
+        System.out.println("Выберите класс животного");
+        presenter.setAnimClassIndex(scanner.nextLine());
+        try {
+            System.out.println(presenter.showAnimTypeList());
+            System.out.println("Выберите тип животного");       
+            String typeNumber = scanner.nextLine();
+            presenter.setAnimTypeIndex(typeNumber);
+            System.out.println("Введите дату рождения животного (ГГГГ-ММ-ДД)");
+            String birthDate = scanner.nextLine();
+            System.out.println("Введите список комманд животного (через запятую)");
+            String comList = scanner.nextLine();
+            System.out.println(presenter.createAnimal(animalName, gender, typeNumber, birthDate,  comList));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }        
     }
    
     private void doselect() { //назначить активное животное

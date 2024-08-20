@@ -49,6 +49,13 @@ public class Donkey extends PackAnimal{
         string = string + " " + this.name;
         return string;
     }
+    public void setBirthDate(LocalDate value){
+        this.birthDay = value;
+    }
+
+    public void setGender (Gender gender) {
+        this.sex = gender;
+    }
 
     @Override
     public String getInfo() {

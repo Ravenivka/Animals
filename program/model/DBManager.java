@@ -1,45 +1,27 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class DBManager {    
+public class DBManager {     
 
-    private HashMap<String, String> animalClasses;
-
-
-    public DBManager() {
-        CSVmanager csVmanager = new CSVmanager("animal_classes.csv");
-        this.animalClasses = new HashMap<>();
-        ArrayList<ArrayList<String>> getValueArray = csVmanager.getValueArray();
-        for (ArrayList<String> arrayList : getValueArray) {
-            String key = cleaString(arrayList.get(1));
-            String value = cleaString(arrayList.get(2));
-            this.animalClasses.put(key, value);
-        }
-
+    public ArrayList<ArrayList<String>> getAnimalClasses(){
+        CSVmanager cm = new CSVmanager("animal_classes.csv");
+        return cm.getValueArray();
     }
 
-    private String cleaString(String value) {
-        String result = value.replaceAll("^\"+|\"+$", "").trim();
-        return result;
+    public ArrayList<ArrayList<String>> getAnimalTypesList(String key) {
+        CSVmanager cm = new CSVmanager(key);
+        return cm.getValueArray();
     }
 
-    public HashMap<String, String> getAnimalClasses(){
-        return this.animalClasses;
+    public void saveTable(String tablePath, ArrayList<Animal> list) {
+        CSVmanager cm = new CSVmanager(tablePath);
+        cm.save(list);
     }
 
-    public HashMap<String, String> getAnimalTypesList(String key) {
-        String path = this.animalClasses.get(key);
-        CSVmanager csVmanager = new CSVmanager(path);
-        ArrayList<ArrayList<String>> getValueArray = csVmanager.getValueArray();
-        HashMap<String, String> map = new HashMap<>();
-        for (ArrayList<String> arrayList : getValueArray) {
-            String index = arrayList.get(1);
-            String value = arrayList.get(3);
-            map.put(index, value);
-        }
-        return map;
+    public void append(String tablePath, String value) {
+        CSVmanager cm = new CSVmanager(tablePath);
+        cm.append(value);
     }
 
 }

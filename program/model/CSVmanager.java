@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class CSVmanager {
     private String filename ;
-    private ArrayList<String> titles;
+    private String titles;
     private ArrayList<ArrayList<String>> listValue;
 
     public  CSVmanager(String path){
@@ -50,7 +50,7 @@ public class CSVmanager {
         } 
     //____________________________________________________________________________________________________________________________________________конец блока вычисления пути к файлам CSV
         ArrayList<String> list = listing();
-        this.titles = StringToList(list.get(0));
+        this.titles = list.get(0);
         this.listValue = valueList(list)  ; 
     } 
 
@@ -97,12 +97,8 @@ public class CSVmanager {
        
     }
   */ 
-    public void setTitles(ArrayList<String> value){
-        this.titles = value;
-    }
-    public ArrayList<String> getTitles(){
-        return this.titles;
-    }
+    
+    
     public void setValueArray(ArrayList<ArrayList<String>> value){
         this.listValue = value;
     }
@@ -110,5 +106,30 @@ public class CSVmanager {
     public ArrayList<ArrayList<String>> getValueArray(){
         return this.listValue;
     }
+
+    public void save(ArrayList<Animal> list) {        
+        try (FileWriter fw = new FileWriter(this.filename, false)){
+            fw.write(this.titles);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        try (FileWriter fw = new FileWriter(this.filename, true)){
+             
+
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void append(String value) {
+        try (FileWriter fw = new FileWriter(this.filename, true)){
+            fw.write(value);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    
 
 }

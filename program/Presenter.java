@@ -1,35 +1,17 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 import model.AnimalManager;
 
 public class Presenter {
 
-    private AnimalManager animalManager;
-    private HashMap<Integer, String> animClassList;
-    private Integer animClassIndex;   
+    private AnimalManager animalManager;  
     
 
     public Presenter() {
-        this.animalManager = new AnimalManager();
-        animClassList = new HashMap<>();
-        HashMap<String, String> map = this.animalManager.getAnimalClasses();
-        Integer i = 1;
-        for (String iterable_element : map.keySet()) {
-            animClassList.put(i, iterable_element);
-            i = i + 1;
-        }
-    }
+        this.animalManager = new AnimalManager();       
+    }    
 
-    
-   
-
-    public String showType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showType'");
-    }
-
-	public String createAnimal(String animalName, String typeNumber, String birthDate, String comList) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'createAnimal'");
+	public String createAnimal(String animalName, String sex, String typeNumber, String birthDate, String comList) {
+		return this.animalManager.createAnimal(animalName, sex, typeNumber, birthDate, comList);
 	}
 
     public char[] setActive(String number) {
@@ -56,46 +38,37 @@ public class Presenter {
 
     public String showClassList() {       
         StringBuilder sb = new StringBuilder();
+        ArrayList<ArrayList<String>> array = this.animalManager.getAnimalClasses();
         sb.append("В приюте есть животные:\n");
-        for (int i = 1; i < this.animClassList.size() + 1; i++) {
-            sb.append(i);
-            sb.append(" - ");
-            sb.append(animClassList.get(i));
+        for (int i = 0; i < array.size(); i ++){            
+            ArrayList<String> list = array.get(i);
+            sb.append(String.format("%s - ", list.get(0)));
+            sb.append(list.get(1));
             sb.append("\n");
         }
+        
         return sb.toString();
     }
 
     public void setAnimClassIndex(String index) {
-        this.animClassIndex = Integer.parseInt(index); 
-        this.animalManager.setActiveClass(this.animClassList.get(animClassIndex))  ;     
-    }
+        this.animalManager.setActiveClass(index)  ;          
+    }  
+    
 
-    public Integer getAnimClassIndex() {
-        return this.animClassIndex;
-    }
-
-    public String getAnimClass() {
-        return this.animClassList.get(this.animClassIndex);
-    }
-
-    public String showAnimTypeList() {
-        HashMap<Integer, String> animTypeList = new HashMap<>();
-        HashMap<String, String> map = this.animalManager.getAnimalTypes();
-        Integer J = 1;
-        for (String iterable_element : map.keySet()) {
-            animTypeList.put(J, iterable_element);
-            J = J + 1;
-        }
-
+    public String showAnimTypeList() {        
+        ArrayList<ArrayList<String>> animTypeList = this.animalManager.getAnimalTypes() ;
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < animTypeList.size(); i++){
-            sb.append(i+1);
-            sb.append(" - ");
-            sb.append(animTypeList.get(i+1));
-            sb.append("\n");
-        }
-        return sb.toString();
+            for (int i = 0; i < animTypeList.size(); i ++){                
+                ArrayList<String> list = animTypeList.get(i);
+                sb.append(String.format("%s - ", list.get(0)));
+                sb.append(this.animalManager.clear(list.get(1)));
+                sb.append("\n");
+            }
+        return sb.toString();        
+    }
+
+    public void setAnimTypeIndex(String typeNumber) {
+        this.animalManager.setAnimTypeIndex(typeNumber) ;
     }
 
 

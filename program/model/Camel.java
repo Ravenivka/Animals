@@ -15,6 +15,15 @@ public class Camel extends PackAnimal{
         this.name = name;
         this.list = new ArrayList<>();
     }
+
+    public void setBirthDate(LocalDate value){
+        this.birthDay = value;
+    }
+
+    public void setGender (Gender gender) {
+        this.sex = gender;
+    }
+    
     public Camel(String name, LocalDate birthDay, Gender sex){
         this(name);
         this.birthDay = birthDay;

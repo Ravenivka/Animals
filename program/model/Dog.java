@@ -88,5 +88,12 @@ public class Dog extends Pet{
         }
         return sb.toString();
     }
+    public void setBirthDate(LocalDate value){
+        this.birthDay = value;
+    }
+
+    public void setGender (Gender gender) {
+        this.sex = gender;
+    }
 
 }
