@@ -36,19 +36,7 @@ public class Presenter {
 
 
 
-    public String showClassList() {       
-        StringBuilder sb = new StringBuilder();
-        ArrayList<ArrayList<String>> array = this.animalManager.getAnimalClasses();
-        sb.append("В приюте есть животные:\n");
-        for (int i = 0; i < array.size(); i ++){            
-            ArrayList<String> list = array.get(i);
-            sb.append(String.format("%s - ", list.get(0)));
-            sb.append(list.get(1));
-            sb.append("\n");
-        }
-        
-        return sb.toString();
-    }
+    
 
     public void setAnimClassIndex(String index) {
         this.animalManager.setActiveClass(index)  ;          

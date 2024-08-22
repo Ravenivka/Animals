@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 
 public class AnimalManager {
-
-    private ArrayList<ArrayList<String>> animalClasses;
+    
     private ArrayList<ArrayList<String>> animalTypes;
     private ArrayList<ArrayList<String>> animals; 
     private String activeTable  ; 
