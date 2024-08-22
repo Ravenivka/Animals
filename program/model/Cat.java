@@ -38,13 +38,10 @@ public class Cat extends Pet{
 
     public String toString() {
         String string = "";
-        switch (this.sex){
-            case Gender.Male:
-                string = "Кот";
-                break;
-            case Gender.Female:
-                string = "Кошка";
-                break;
+        if(this.sex == Gender.Female){
+            string = "Кошка";
+        } else {
+            string = "Кот";
         }
         string = string + " " + this.name;
         return string;

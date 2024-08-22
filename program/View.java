@@ -173,7 +173,12 @@ public class View {
     }
 
     private void doselect() { //назначить активное животное
-        System.out.println(presenter.showList("1"));
+        // Чистый экран _________________________________
+        System.out.print("\033[H\033[2J"); 
+        System.out.flush();
+        //_______________________________________________
+        String choice = showClassList();
+        System.out.println(presenter.showList(choice));
         System.out.println("Введите номер");
         String number = scanner.nextLine();
         System.out.println(presenter.setActive(number));        

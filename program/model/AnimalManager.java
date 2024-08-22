@@ -17,7 +17,15 @@ public class AnimalManager {
         this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }  
 
-    public void setSelected(int index) {
+    public void setSelected(int index) throws Exception {
+        if (this.selectedAnimals == null || this.selectedAnimals.size() == 0){
+            this.selected = null;
+            throw new RuntimeException("Список пуст");
+        }
+        if (index >= this.selectedAnimals.size() || index < 0) {
+            this.selected = null;
+            throw new RuntimeException("Выбор вне области значений");
+        }
         this.selected = this.selectedAnimals.get(index);
     }
     public Animal getSelected() {
@@ -56,7 +64,7 @@ public class AnimalManager {
         ArrayList<ArrayList<String>> list = this.dbManager.getAnimalList(key);
         for (ArrayList<String> arrayList : list) {
             Gender gender;
-            if (arrayList.get(2).equals("м")) {
+            if (arrayList.get(2).equals("\"м\"")) {
                 gender = Gender.Male;
             } else {
                 gender = Gender.Female;
@@ -126,7 +134,7 @@ public class AnimalManager {
    public void addAnimal (String name, String sex, String commands, String birhdate,  String key) {
         setSelectedAnimals(key);
         Gender gender;
-            if (sex.equals("м")) {
+            if (sex.equals("м")) {  
                 gender = Gender.Male;
             } else {
                 gender = Gender.Female;
@@ -136,6 +144,21 @@ public class AnimalManager {
         this.selected = createAnimal(name, gender, commands, day, key)  ;
         this.selectedAnimals.add(selected);
    }
+
+public String showList(String choice) {
+    setSelectedAnimals(choice)    ;
+    if (this.selectedAnimals.isEmpty()){
+        return "Список пуст";
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < this.selectedAnimals.size() ; i++) {
+        sb.append(i);
+        sb.append(" - ");
+        sb.append(this.selectedAnimals.get(i).toString());
+        sb.append("\n");
+    }
+    return sb.toString();
+}
 
    
 

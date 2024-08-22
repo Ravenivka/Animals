@@ -11,9 +11,14 @@ public class Presenter {
 
 	
 
-    public char[] setActive(String number) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setActive'");
+    public String setActive(String number) {
+        try{
+            this.animalManager.setSelected(Integer.parseInt(number));   
+            return String.format("Выбран номер %s", number);     
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        
     }
 
     public char[] remove() {
@@ -25,11 +30,7 @@ public class Presenter {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'showCommands'");
     }
-
-    public String showList(String index) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showList'");
-    }
+    
 
 
 
@@ -41,6 +42,16 @@ public class Presenter {
             return e.getMessage();
         }
     }
+
+
+
+    public String showList(String choice) {
+        return this.animalManager.showList(choice);
+    }
+
+
+
+    
 
 
 
