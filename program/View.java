@@ -98,30 +98,80 @@ public class View {
     }
 
     private void doAdd() {
-        System.out.print("\033[H\033[2J");
+        // Чистый экран _________________________________
+        System.out.print("\033[H\033[2J"); 
         System.out.flush();
-        System.out.println("Введите имя");
-        String animalName = scanner.nextLine();
-        System.out.println("Введите пол (м/ж)");
-        String gender = scanner.nextLine();
-        System.out.println(presenter.showClassList());
-        System.out.println("Выберите класс животного");
-        presenter.setAnimClassIndex(scanner.nextLine());
+        //_______________________________________________
+        //redone
         try {
-            System.out.println(presenter.showAnimTypeList());
-            System.out.println("Выберите тип животного");       
-            String typeNumber = scanner.nextLine();
-            presenter.setAnimTypeIndex(typeNumber);
+            System.out.println("Введите имя");
+            String animalName = scanner.nextLine();        
+            System.out.println("Введите пол (м/ж)");
+            String gender = scanner.nextLine();        
+            String choice = showClassList();           
             System.out.println("Введите дату рождения животного (ГГГГ-ММ-ДД)");
             String birthDate = scanner.nextLine();
             System.out.println("Введите список комманд животного (через запятую)");
             String comList = scanner.nextLine();
-            System.out.println(presenter.createAnimal(animalName, gender, typeNumber, birthDate,  comList));
+            System.out.println(presenter.createAnimal(animalName, gender, choice, birthDate,  comList));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }        
     }
    
+    private String showClassList() {
+        String string = "1 - Вьючные животные\n2 - Домашние животные\nВаш выбор:\n";
+        System.out.println(string);
+        String choice = this.scanner.nextLine();
+        if (!(choice.equals("1") || choice.equals("2") || choice.equals("q"))){
+            return "Выбор вне области допустимых значений";
+        } else if (choice.equals("1")) {
+            return showPackedAnimals();
+        } else {
+            return showPetAnimals() ;
+        }        
+    }
+
+    private String showPetAnimals() {
+        String string = "1 - Кошки\n2 - Хомяки\n3 - Собаки\nВаш выбор:\n";
+        System.out.println(string);
+        String choice = this.scanner.nextLine();
+        switch (choice) {
+            case "1":
+                return "cats.csv";
+            case "2":
+                return "hamsters.csv";
+            case "3":
+                return "dogs.csv";
+            case "q":
+                exit();
+                break;
+            default:
+                return "Выбор вне области допустимых значений";            
+        }
+        return "";      
+    }
+
+    private String showPackedAnimals() {
+        String string = "1 - Ослы\n2 - Верблюды\n3 - Лошади\nВаш выбор:\n";
+        System.out.println(string);
+        String choice = this.scanner.nextLine();
+        switch (choice) {
+            case "1":
+                return "donkeys.csv";
+            case "2":
+                return "camels.csv";
+            case "3":
+                return "horses.csv";
+            case "q":
+                exit();
+                break;
+            default:
+                return "Выбор вне области допустимых значений";            
+        }
+        return "";
+    }
+
     private void doselect() { //назначить активное животное
         System.out.println(presenter.showList("1"));
         System.out.println("Введите номер");

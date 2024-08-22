@@ -2,14 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
-public class DBManager {     
+public class DBManager {  
+    
 
-    public ArrayList<ArrayList<String>> getAnimalClasses(){
-        CSVmanager cm = new CSVmanager("animal_classes.csv");
-        return cm.getValueArray();
-    }
-
-    public ArrayList<ArrayList<String>> getAnimalTypesList(String key) {
+    public ArrayList<ArrayList<String>> getAnimalList(String key) {
         CSVmanager cm = new CSVmanager(key);
         return cm.getValueArray();
     }
@@ -23,5 +19,5 @@ public class DBManager {
         CSVmanager cm = new CSVmanager(tablePath);
         cm.append(value);
     }
-
+    
 }

@@ -5,179 +5,139 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
-public class AnimalManager {
-    
-    private ArrayList<ArrayList<String>> animalTypes;
-    private ArrayList<ArrayList<String>> animals; 
-    private String activeTable  ; 
+public class AnimalManager {    
     private DBManager dbManager;
-    private DateTimeFormatter formatter;    
-    private Animal animal;
-    private ArrayList<Animal> animalCollection;
-    private String cName ;
+    private DateTimeFormatter formatter; 
+    private Animal selected;
+    private ArrayList<Animal> selectedAnimals;
+    private int Genus_id;
 
     public AnimalManager(){
-        this.dbManager = new DBManager();
-        this.animalClasses = dbManager.getAnimalClasses();
+        this.dbManager = new DBManager();        
         this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    }
+    }  
 
-    public void setActiveClass(String value){ 
-        try{            
-            int index = outerIndex(value, animalClasses);
-            ArrayList<String> list = animalClasses.get(index)  ;
-            String s = clear(list.get(2));
-            this.animalTypes = dbManager.getAnimalTypesList(s)  ;  
-        } catch (Exception e) {           
-            this.animalTypes = null;
-        }                        
+    public void setSelected(int index) {
+        this.selected = this.selectedAnimals.get(index);
     }
-    
-
-    private int outerIndex(String value, ArrayList<ArrayList<String>> list) {
-        ArrayList<String> item;
-        for(int i = 0; i < list.size(); i++) {
-            item = list.get(i);
-            if (value.equals(item.get(0))){
-                return i;
-            }            
-        }
-        int i = -1;
-            return i;
+    public Animal getSelected() {
+        return this.selected;
     }
-
-    public ArrayList<ArrayList<String>> getAnimalClasses() {
-        return this.animalClasses;
-    }
-
-    public ArrayList<ArrayList<String>> getAnimalTypes() {
-        return this.animalTypes ;
-    }
-    
-    
-    public String clear(String string) {
-        String s = string.replaceAll("^\"|\"$", "").trim();
-        return s;
-    }
-
-    public String createAnimal(String animalName, String gender, String typeNumber, String birthDate, String comList) {
-        boolean valid = true;
-        try {
-            valid = check(animalName, gender, typeNumber, birthDate);
-        } catch (Exception e) {
-            return e.getMessage();
+    private void setSelectedAnimals (String key) {
+        this.selectedAnimals = new ArrayList<>();
+        switch(key){
+            case ("Вьючные животные"):
+                this.selectedAnimals.addAll(selectAnimals("camels.csv"));
+                this.selectedAnimals.addAll(selectAnimals("donkeys.csv"));
+                this.selectedAnimals.addAll(selectAnimals("horses.csv"));
+                break;
+            case ("Домашние животные"):
+                this.selectedAnimals.addAll(selectAnimals("cats.csv"));
+                this.selectedAnimals.addAll(selectAnimals("hamsters.csv"));
+                this.selectedAnimals.addAll(selectAnimals("dogs.csv"));
+                break;
+            case ("Полный список"):
+                this.selectedAnimals.addAll(selectAnimals("camels.csv"));
+                this.selectedAnimals.addAll(selectAnimals("donkeys.csv"));
+                this.selectedAnimals.addAll(selectAnimals("horses.csv"));
+                this.selectedAnimals.addAll(selectAnimals("cats.csv"));
+                this.selectedAnimals.addAll(selectAnimals("hamsters.csv"));
+                this.selectedAnimals.addAll(selectAnimals("dogs.csv"));
+                break;
+            default:
+                this.selectedAnimals = selectAnimals(key);
+                break;
         }
 
-        if (valid == false) {
-            return "Неожиданная ошибка";
-        }
-        
-        int id = this.animals.size();
-        String addon = String.format("%d;\"%s\";\"%s\";\"%s\";\"%s\";%s", id, animalName, gender, birthDate, comList, typeNumber);
-        try{
-            append(this.activeTable, addon);
-            return "OK";
-        } catch (Exception e) {
-            return (e.getMessage());
-        }
     }
 
-    public void setAnimTypeIndex(String typeNumber) {
-        try{            
-            int index = outerIndex(typeNumber, animalTypes);
-            ArrayList<String> list = this.animalTypes.get(index)  ;
-            String s = clear(list.get(3));
-            this.animals = dbManager.getAnimalTypesList(s)  ; 
-            this.activeTable = s;
-            this.cName = clear(list.get(4));
-        } catch (Exception e) {            
-            this.animals = null;
-            this.cName = null;
-        }
-    }
-
-    private void saveTable(String tablePath, ArrayList<Animal> list) {
-        this.dbManager.saveTable(tablePath, list);
-    }
-    private void append(String tablePath, String value) {
-        this.dbManager.append(tablePath, value);
-    }
-
-    private boolean check(String animalName, String gender, String typeNumber, String birthDate) throws Exception {
-        boolean boo = true;
-        if (animalName.equals("")){
-            boo = false;
-            throw new RuntimeException("Нет имени");            
-        }
-        if (!(gender.equals("м") || gender.equals("ж"))) {
-            boo = false;
-            throw new RuntimeException("Пол не определён"); 
-        }
-        try{
-            Integer.parseInt(typeNumber);
-        } catch (Exception e) {
-            boo = false;
-            throw new RuntimeException("Должен быть номер");
-        }
-        try{
-            LocalDate.parse(birthDate, this.formatter);
-        } catch (Exception e) {
-            boo = false;
-            throw new RuntimeException("Неверный формат даты");
-        }
-        return boo;
-    }
-
-    public ArrayList<Animal> getCollection(String table) {
-        ArrayList<Animal> listik = new ArrayList<>();
-        Animal item = null;
-        Gender gender;
-        CSVmanager csv = new CSVmanager(table);
-        ArrayList<ArrayList<String>> arrayList = csv.getValueArray();
-        for (ArrayList<String> arrayList2 : arrayList) {
-            String itemName = arrayList2.get(1);
-            itemName = clear(itemName);
-            String bd = clear(arrayList2.get(3));
-            LocalDate birthdate = LocalDate.parse(bd, this.formatter);
-            if (clear(arrayList2.get(2)).equals("м")) {
+    private ArrayList<Animal> selectAnimals (String key) {
+        ArrayList<Animal> animals = new ArrayList<>();
+        ArrayList<ArrayList<String>> list = this.dbManager.getAnimalList(key);
+        for (ArrayList<String> arrayList : list) {
+            Gender gender;
+            if (arrayList.get(2).equals("м")) {
                 gender = Gender.Male;
             } else {
                 gender = Gender.Female;
             }
-            switch (table){
-                case "camels.csv":
-                    item = new Camel(itemName, birthdate, gender);
-                    break;
-                case "cats.csv":
-                    item = new Cat(itemName, birthdate, gender);
-                    break;
-                case "dogs.csv":
-                    item = new Dog(itemName, birthdate, gender);
-                    break;
-                case "donkeys.csv":
-                    item = new Donkey(itemName, birthdate, gender);
-                    break;
-                case "hamsters.csv":
-                    item = new Hamster(itemName, birthdate, gender);
-                    break;
-                case "horses.csv":
-                    item = new Horse(itemName, birthdate, gender);
-                    break;
-            }
-            item = doList(arrayList2.get(4), item);
-            listik.add(item);
+            LocalDate day = LocalDate.parse(clear(arrayList.get(3)));
+            Animal item = createAnimal(clear(arrayList.get(1)), gender, clear(arrayList.get(4)) , day, key);
+            animals.add(item);
+            this.Genus_id = Integer.parseInt(arrayList.get(5));
         }
-        return listik;
+       return animals;
+    }
+  
+    
+    private Animal createAnimal(String name, Gender gender, String commands, LocalDate birhdate,  String key) throws RuntimeException{
+        Animal animal;
+        switch (key) {
+            case "camels.csv":
+                animal = new Camel(name);
+                break;
+            case "cats.csv":
+                animal = new Cat(name);
+                break;
+            case "dogs.csv":
+                animal = new Dog(name);
+                break;
+            case "donkeys.csv":
+                animal = new Donkey(name);
+                break;
+            case "hamsters.csv":
+                animal = new Hamster(name);
+                break;
+            case "horses.csv":
+                animal = new Horse(name);
+                break;        
+            default:                
+                throw new RuntimeException("Незарегистрированный класс животного");                
+        }
+        animal.setGender(gender);
+        animal.setBirthDate(birhdate);        
+        writeCommands(animal, commands);
+        return animal;
     }
 
-    private Animal doList(String actionString, Animal animal2) {        
-        String[] array = clear(actionString).split(",");
-        
+    /* */
+
+    private void writeCommands(Animal animal, String clear) { //Забавно сработало автосоздание метода ;)
+        String[] array = clear.split(",");
         for (String string : array) {
-            animal2.setCommand(string);
+            animal.setCommand(string);
         }
-        return animal2;
     }
+
+    public String clear(String string) {
+        String s = string.replaceAll("^\"|\"$", "").trim();
+        return s;
+    }   
+
+    private void saveTable(String tablePath, ArrayList<Animal> list) {
+        this.dbManager.saveTable(tablePath, list);
+    }
+    private void append(String tablePath, String name, String sex, String commands, String birhdate, int index) {
+        int i = this.Genus_id;
+        String value = String.format("%d;\"%s\";\"%s\";\"%s\";\"%s\";%d", index + 1, name, sex, birhdate, commands, i);
+        this.dbManager.append(tablePath, value);
+    }
+
+   public void addAnimal (String name, String sex, String commands, String birhdate,  String key) {
+        setSelectedAnimals(key);
+        Gender gender;
+            if (sex.equals("м")) {
+                gender = Gender.Male;
+            } else {
+                gender = Gender.Female;
+            }
+        LocalDate day = LocalDate.parse(birhdate, this.formatter);  
+        append(key, name, sex, commands, birhdate, this.selectedAnimals.size());
+        this.selected = createAnimal(name, gender, commands, day, key)  ;
+        this.selectedAnimals.add(selected);
+   }
+
+   
 
 
 }
