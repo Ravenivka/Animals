@@ -53,8 +53,21 @@ public class Hamster extends Pet{
         this.birthDay = value;
     }
 
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDay;
+    }
+
     public void setGender (Gender gender) {
         this.sex = gender;
+    }
+    public Gender getGender() {
+        return this.sex;
+    }
+
+    @Override
+    public ArrayList<String> getCommandList() {
+        return this.list;
     }
 
     @Override

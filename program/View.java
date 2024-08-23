@@ -45,7 +45,7 @@ public class View {
                     removeCommand();
                     break;
                 case "list":
-                    showList();
+                showSelectionType();
                     break;
                 default:
                     break;
@@ -54,7 +54,7 @@ public class View {
 
     }   
 
-    private void showList() {
+    private void showSelectionType() {
         System.out.println("Выбор условия:");
         System.out.println("1 - без сортировки");
         System.out.println("2 - сортировка по имени");
@@ -185,7 +185,12 @@ public class View {
     }
 
     private void remove() { //удаляет активное животное
-        System.out.println(presenter.remove()); 
+        try{
+            System.out.println(presenter.remove()); 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
 
     private void showCommands() { //для активного животного
@@ -193,12 +198,19 @@ public class View {
     }
 
     private void removeCommand() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeCommand'");
+        System.out.println("Выбор комманды");
+        System.out.println(this.presenter.showEnumeratedCommands());
+        System.out.println(this.presenter.removeCommand(Integer.parseInt(this.scanner.nextLine())));
+
     }
 
     private void addCommand() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addCommand'");
+        System.out.println("Введите комманду");
+        try {
+            System.out.println(this.presenter.addCommand(this.scanner.nextLine()));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+       
     }
 }

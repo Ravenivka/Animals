@@ -11,6 +11,7 @@ public class AnimalManager {
     private Animal selected;
     private ArrayList<Animal> selectedAnimals;
     private int Genus_id;
+    private String selectedTable;
 
     public AnimalManager(){
         this.dbManager = new DBManager();        
@@ -54,6 +55,7 @@ public class AnimalManager {
                 break;
             default:
                 this.selectedAnimals = selectAnimals(key);
+                this.selectedTable = key;
                 break;
         }
 
@@ -113,7 +115,7 @@ public class AnimalManager {
     private void writeCommands(Animal animal, String clear) { //Забавно сработало автосоздание метода ;)
         String[] array = clear.split(",");
         for (String string : array) {
-            animal.setCommand(string);
+            animal.setCommand(string.trim());
         }
     }
 
@@ -122,16 +124,30 @@ public class AnimalManager {
         return s;
     }   
 
-    private void saveTable(String tablePath, ArrayList<Animal> list) {
-        this.dbManager.saveTable(tablePath, list);
+    private void saveTable(String tablePath, ArrayList<Animal> list) throws Exception {
+        ArrayList<String> array = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Animal item = list.get(i);
+            String gender;
+            if (item.getGender().equals(Gender.Female)){
+                gender = "\"ж\"";
+            } else {
+                gender = "\"м\"";
+            }
+            String s = String.format("%d;\"%s\";%s;\"%s\";%s;%d\n" , i, item.getName(), gender, item.getBirthDate().format(this.formatter), item.getCommandsString(), this.Genus_id);
+            array.add(s);            
+        }
+        this.dbManager.saveTable(tablePath, array);
     }
-    private void append(String tablePath, String name, String sex, String commands, String birhdate, int index) {
+
+    private void append(String tablePath, String name, String sex, String commands, String birhdate, int index) throws Exception {
         int i = this.Genus_id;
+        this.selectedTable = tablePath;
         String value = String.format("%d;\"%s\";\"%s\";\"%s\";\"%s\";%d", index + 1, name, sex, birhdate, commands, i);
         this.dbManager.append(tablePath, value);
     }
 
-   public void addAnimal (String name, String sex, String commands, String birhdate,  String key) {
+   public void addAnimal (String name, String sex, String commands, String birhdate,  String key) throws Exception {
         setSelectedAnimals(key);
         Gender gender;
             if (sex.equals("м")) {  
@@ -160,6 +176,46 @@ public String showList(String choice) {
     return sb.toString();
 }
 
+public boolean remove() throws RuntimeException {
+    if (this.selected == null) {
+        throw new RuntimeException("Животное отсутствует в списке");
+    }
+    try{
+        this.selectedAnimals.remove(this.selected);
+        this.selected = null;
+        saveTable(this.selectedTable, selectedAnimals);
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
+}
+
+public String addCommand(String nextLine) throws Exception {  
+    try{
+       String s = this.selected.setCommand(nextLine);
+       saveTable(this.selectedTable, selectedAnimals);
+       return s;
+    } catch (Exception e) {
+        return e.getMessage();
+    }
+     
+   
+}
+
+public String showEnumeratedCommands(){
+    ArrayList<String> array = this.selected.getCommandList();
+    if(array.isEmpty()){
+        return "";
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < array.size(); i++){
+        sb.append(i);
+        sb.append(" - ");
+        sb.append(array.get(i));
+        sb.append("\n");
+    }
+    return sb.toString();
+}
    
 
 

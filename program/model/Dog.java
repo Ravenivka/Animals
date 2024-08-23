@@ -95,5 +95,17 @@ public class Dog extends Pet{
     public void setGender (Gender gender) {
         this.sex = gender;
     }
+    public Gender getGender() {
+        return this.sex;
+    }
 
+    @Override
+    public ArrayList<String> getCommandList() {
+        return this.list;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDay;
+    }
 }

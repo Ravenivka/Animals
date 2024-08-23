@@ -98,4 +98,19 @@ public class Camel extends PackAnimal{
         return sb.toString();
     }
 
+    public Gender getGender() {
+        return this.sex;
+    }
+
+    @Override
+    public ArrayList<String> getCommandList() {
+        return this.list;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDay;
+    }
+
+
 }

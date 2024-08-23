@@ -42,6 +42,20 @@ public class Horse extends PackAnimal{
     public void setGender (Gender gender) {
         this.sex = gender;
     }
+    public Gender getGender() {
+        return this.sex;
+    }
+
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDay;
+    }
+
+    @Override
+    public ArrayList<String> getCommandList() {
+        return this.list;
+    }
+
 
     public String toString() {
         String string = "";

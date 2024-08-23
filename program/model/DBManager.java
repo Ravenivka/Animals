@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DBManager {  
@@ -10,12 +11,12 @@ public class DBManager {
         return cm.getValueArray();
     }
 
-    public void saveTable(String tablePath, ArrayList<Animal> list) {
+    public void saveTable(String tablePath, ArrayList<String> list) throws IOException {
         CSVmanager cm = new CSVmanager(tablePath);
         cm.save(list);
     }
 
-    public void append(String tablePath, String value) {
+    public void append(String tablePath, String value) throws IOException {
         CSVmanager cm = new CSVmanager(tablePath);
         cm.append(value);
     }

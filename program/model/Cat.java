@@ -9,11 +9,11 @@ public class Cat extends Pet{
     private String name;
     private LocalDate birthDay;
     private Gender sex;
-    private ArrayList<String> list;
+    private ArrayList<String> commandsList;
 
     public Cat(String name){
         this.name = name;
-        this.list = new ArrayList<>();
+        this.commandsList = new ArrayList<>();
     }
     public Cat(String name, LocalDate birthDay, Gender sex){
         this(name);
@@ -59,14 +59,12 @@ public class Cat extends Pet{
     }
 
    
-    public ArrayList<String> getCommands() {
-       return this.list;
-    }
+  
 
     @Override
     public String setCommand(String value) {
         try{
-            list.add(value);
+            commandsList.add(value);
             return String.format("Комманда %s добавлена", value);
         } catch (Exception e) {
             return e.getMessage();
@@ -74,12 +72,12 @@ public class Cat extends Pet{
     }
     @Override
     public String showCommands() {
-        if (this.list.isEmpty()){
+        if (this.commandsList.isEmpty()){
             return "Список комманд пуст\n";
         }
         StringBuilder sb = new StringBuilder();
         sb.append("Список комманд:\n");
-        for (String string : list) {
+        for (String string : commandsList) {
             sb.append(string);
             sb.append("\n");
         }
@@ -91,6 +89,18 @@ public class Cat extends Pet{
 
     public void setGender (Gender gender) {
         this.sex = gender;
+    }
+
+    public Gender getGender() {
+        return this.sex;
+    }
+    @Override
+    public ArrayList<String> getCommandList() {
+        return this.commandsList;
+    }
+    @Override
+    public LocalDate getBirthDate() {
+        return this.birthDay;
     }
 
 }

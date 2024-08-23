@@ -91,13 +91,7 @@ public class CSVmanager {
             System.out.println(e);
         }
         return list;
-    }
-/* 
-    public ArrayList<ArrayList<String>> load(){
-       
-    }
-  */ 
-    
+    }    
     
     public void setValueArray(ArrayList<ArrayList<String>> value){
         this.listValue = value;
@@ -107,25 +101,27 @@ public class CSVmanager {
         return this.listValue;
     }
 
-    public void save(ArrayList<Animal> list) {        
+    public void save(ArrayList<String> list) throws IOException {        
         try (FileWriter fw = new FileWriter(this.filename, false)){
-            fw.write(this.titles);
-        } catch (IOException e) {
+            String s = this.titles + "\n";
+            fw.write(s);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         try (FileWriter fw = new FileWriter(this.filename, true)){
-             
+            for (int i = 0 ; i < list.size(); i++) {
+                fw.write(list.get(i));
+            }
 
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void append(String value) {
+    public void append(String value) throws IOException {
         try (FileWriter fw = new FileWriter(this.filename, true)){
             fw.write(value);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
