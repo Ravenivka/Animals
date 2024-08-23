@@ -4,6 +4,18 @@ public class View {
 
     private Presenter presenter;
     private Scanner scanner;
+    private String choiceString = """
+            1 - Верблюды,
+            2 - Ослы,
+            3 - Лошади,
+            4 - Кошки,
+            5 - Хомяки,
+            6 - Собаки,
+            7 - Вьючные животные,
+            8 - Домашние животные,
+            9 - полный список
+            Ваш выбор:    
+                """;
 
     public View(){
         this.presenter = new Presenter(); 
@@ -47,6 +59,12 @@ public class View {
                 case "list":
                 showSelectionType();
                     break;
+                case "info":
+                    showinfo();
+                    break;
+                case "count":
+                    showCount();
+                    break;
                 default:
                     break;
             }
@@ -54,38 +72,62 @@ public class View {
 
     }   
 
+    private void showCount() {
+        // Чистый экран _________________________________
+        System.out.print("\033[H\033[2J"); 
+        System.out.flush();
+        //_______________________________________________
+        System.out.println("Количество каких животных Вы желаете узнать?");
+        System.out.println(this.choiceString);
+        try{
+            String s = choosenTable(scanner.nextLine());
+            System.out.println(presenter.showCount(s));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void showinfo() {
+        // Чистый экран _________________________________
+        System.out.print("\033[H\033[2J"); 
+        System.out.flush();
+        //_______________________________________________
+        try{
+            System.out.println(presenter.showInfo());
+        } catch (Exception a) {
+            System.out.println(a);
+        }
+    }
+
     private void showSelectionType() {
         System.out.println("Выбор условия:");
         System.out.println("1 - без сортировки");
         System.out.println("2 - сортировка по имени");
         System.out.println("3 - сортировка по возрасту");
         System.out.println("Введите номер");
-        String number = scanner.nextLine();        
-        doList(number);
-        
+        String number = scanner.nextLine();  
+        if (number.equals("q")) {
+            exit();
+        }      
+        doList(number);        
     }
 
     private void showHelp() {
         System.out.println("""
-            Срисок комманд:\n
-            \thelp - просмотр списка комманд,\n
-            \tq - выход из программы,\n
-            \tadd - добавить новое животное,\n
-            \tselect - выбрать животное,\n
-            \tdel - удалить животное,\n
-            \tcom - посмотреть список комманд животного,\n
-            \tac - добавить комманду в список,\n
-            \trc - удалить комманду из списка,\n
-            \tlist - посмотреть список животных,\n
-
+            Срисок комманд:
+            \thelp - просмотр списка комманд,
+            \tq - выход из программы,
+            \tadd - добавить новое животное,
+            \tselect - выбрать животное,
+            \tdel - удалить животное,
+            \tcom - посмотреть список комманд животного,
+            \tac - добавить комманду в список,
+            \trc - удалить комманду из списка,
+            \tinfo - посмотреть информацию о животном,
+            \tlist - посмотреть список животных,
+            \tcount - посмотреть количество животных
         """);
     }
-
-
-
-
-
-
 
     private void exit(){
         System.out.println("Good bye");
@@ -94,7 +136,49 @@ public class View {
     }
     
     private void doList(String index) {
-        System.out.println(presenter.showList(index));
+        // Чистый экран _________________________________
+        System.out.print("\033[H\033[2J"); 
+        System.out.flush();
+        //_______________________________________________
+        System.out.println("Условия поиска:");
+        System.out.println(choiceString);
+        String choice = choosenTable(this.scanner.nextLine());
+        if (choice.equals("q")){
+            exit();
+        }
+        try{
+            System.out.println(this.presenter.showSortedList(index, choice));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private String choosenTable(String nextLine) {
+        if (nextLine.equals("q")) {
+            exit();
+        } 
+        switch (nextLine) {
+            case "1":                
+                return "camels.csv";
+            case "2":                
+                return "donkeys.csv";
+            case "3":                
+                return "horses.csv";
+            case "4":
+                return "cats.csv";                
+            case "5":                
+                return "hamsters.csv";
+            case "6":                
+                return "dogs.csv";
+            case "7":                
+                return "Вьючные животные";
+            case "8":                
+                return "Домашние животные";
+            case "9":                
+                return "Полный список" ;      
+            default:
+                return "Вне диапазона";
+        }        
     }
 
     private void doAdd() {
@@ -173,6 +257,7 @@ public class View {
     }
 
     private void doselect() { //назначить активное животное
+        
         // Чистый экран _________________________________
         System.out.print("\033[H\033[2J"); 
         System.out.flush();

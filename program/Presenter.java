@@ -61,4 +61,17 @@ public class Presenter {
         }
     }
 
+    public String showInfo() {
+        return animalManager.showInfo();
+    }
+
+    public String showSortedList(String index, String choice) {
+        int i = Integer.parseInt(index);
+        return this.animalManager.showSortedList(i, choice);
+    }
+
+    public String showCount(String nextLine) {
+        return animalManager.showCount(nextLine);
+    }
+
 }

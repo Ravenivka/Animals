@@ -51,13 +51,14 @@ public abstract class Animal implements MainInterface{
     }
 
      @Override
-    public String getAge() {
-        Period period = Period.between(LocalDate.now(), birthDay);
-        return String.format("%d", period.getYears());
+    public int getAge() {
+        Period period = Period.between(birthDay, LocalDate.now());
+        return  period.getYears();
     }
-    public String getAgeInMonths() {
-        Period period = Period.between(LocalDate.now(), birthDay);
-        return String.format("%d", period.getMonths());
+    public int getAgeInMonths() {
+        Period period = Period.between( birthDay , LocalDate.now());        
+        int M =period.getYears()*12 + period.getMonths(); 
+        return  M;
     }
 
     @Override
@@ -65,7 +66,7 @@ public abstract class Animal implements MainInterface{
         StringBuilder sb = new StringBuilder();
         sb.append(this.toString());
         sb.append("\n");
-        sb.append(this.getAge());
+        sb.append(String.format("Возраст: %d", this.getAge()));
         sb.append("\n");
         sb.append(this.showCommands());
         return sb.toString();
@@ -89,6 +90,15 @@ public abstract class Animal implements MainInterface{
             return String.format("Комманда %s добавлена", value);
         } catch (Exception e) {
             return e.getMessage();
+        }
+    }
+
+    public boolean removeCommand(int index) {
+        try{
+            this.list.remove(index);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

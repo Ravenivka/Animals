@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
+import java.util.Comparator;
 
 public class AnimalManager {    
     private DBManager dbManager;
@@ -12,6 +12,12 @@ public class AnimalManager {
     private ArrayList<Animal> selectedAnimals;
     private int Genus_id;
     private String selectedTable;
+    private Comparator<Animal> compareByName = Comparator
+                        .comparing(Animal::getName)
+                        .thenComparing(Animal::getName);
+    private Comparator<Animal> compareByAge = Comparator
+                        .comparing(Animal::getAgeInMonths)
+                        .thenComparing(Animal::getAgeInMonths);
 
     public AnimalManager(){
         this.dbManager = new DBManager();        
@@ -218,10 +224,55 @@ public String showEnumeratedCommands(){
 }
 
 public boolean removeCommand(int int1) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'removeCommand'");
+    try {
+        if(this.selected.removeCommand(int1)) {
+            saveTable(this.selectedTable, selectedAnimals);
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception e) {
+        return false;
+    }
 }
-   
+
+public String showInfo() {
+    return selected.getInfo();
+}
+
+public String showSortedList(int i, String choice) {
+    setSelectedAnimals(choice);
+    String sortedList = sort(i);
+    return sortedList;
+}
+
+
+
+
+
+private String sort(int index) {
+    switch (index) {
+        case 2:
+            this.selectedAnimals.sort(compareByName);
+            break;
+        case 3:
+            this.selectedAnimals.sort(compareByAge);
+            break;
+        default:
+            break;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (Animal animal : selectedAnimals) {
+        sb.append(animal.toString());
+        sb.append("\n");
+    }
+    return sb.toString();
+}
+
+public String showCount(String nextLine) {
+    setSelectedAnimals(nextLine);
+    return String.format("Количество животных: %d", this.selectedAnimals.size());
+}
 
 
 }
