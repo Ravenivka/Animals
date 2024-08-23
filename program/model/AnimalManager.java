@@ -216,6 +216,11 @@ public String showEnumeratedCommands(){
     }
     return sb.toString();
 }
+
+public boolean removeCommand(int int1) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'removeCommand'");
+}
    
 
 

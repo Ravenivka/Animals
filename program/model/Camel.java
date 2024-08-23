@@ -1,33 +1,22 @@
 package model;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 
 public class Camel extends PackAnimal{
 
-    private String name;
-    private LocalDate birthDay;
-    private Gender sex;
+    private String name;   
     private ArrayList<String> list;
 
     public Camel(String name){
         this.name = name;
         this.list = new ArrayList<>();
-    }
-
-    public void setBirthDate(LocalDate value){
-        this.birthDay = value;
-    }
-
-    public void setGender (Gender gender) {
-        this.sex = gender;
-    }
+    }    
     
     public Camel(String name, LocalDate birthDay, Gender sex){
         this(name);
-        this.birthDay = birthDay;
-        this.sex = sex;
+        super.setBirthDate(birthDay);
+        super.setGender(sex);
     }
 
     @Override
@@ -35,19 +24,11 @@ public class Camel extends PackAnimal{
         return this.name;
     }
 
-    @Override
-    public String getAge() {
-        Period period = Period.between(LocalDate.now(), birthDay);
-        return String.format("%d", period.getYears());
-    }
-    public String getAgeInMonths() {
-        Period period = Period.between(LocalDate.now(), birthDay);
-        return String.format("%d", period.getMonths());
-    }
+   
 
     public String toString() {
         String string = "";
-        switch (this.sex){
+        switch (super.getGender()){
             case Gender.Male:
                 string = "Верблюд: Самец";
                 break;
@@ -59,16 +40,7 @@ public class Camel extends PackAnimal{
         return string;
     }
 
-    @Override
-    public String getInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.toString());
-        sb.append("\n");
-        sb.append(this.getAge());
-        sb.append("\n");
-        sb.append(this.showCommands());
-        return sb.toString();
-    }
+   
 
    
     public ArrayList<String> getCommands() {
@@ -98,19 +70,11 @@ public class Camel extends PackAnimal{
         return sb.toString();
     }
 
-    public Gender getGender() {
-        return this.sex;
-    }
+    
 
     @Override
     public ArrayList<String> getCommandList() {
         return this.list;
     }
-
-    @Override
-    public LocalDate getBirthDate() {
-        return this.birthDay;
-    }
-
 
 }

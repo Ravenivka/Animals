@@ -1,24 +1,22 @@
 package model;
 
 import java.time.LocalDate;
-import java.time.Period;
+
 import java.util.ArrayList;
 
 public class Cat extends Pet{
 
-    private String name;
-    private LocalDate birthDay;
-    private Gender sex;
-    private ArrayList<String> commandsList;
+    private String name;   
+    private ArrayList<String> list;
 
     public Cat(String name){
         this.name = name;
-        this.commandsList = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
     public Cat(String name, LocalDate birthDay, Gender sex){
         this(name);
-        this.birthDay = birthDay;
-        this.sex = sex;
+        super.setBirthDate(birthDay);
+        super.setGender(sex);
     }
 
     @Override
@@ -26,19 +24,9 @@ public class Cat extends Pet{
         return this.name;
     }
 
-    @Override
-    public String getAge() {
-        Period period = Period.between(LocalDate.now(), birthDay);
-        return String.format("%d", period.getYears());
-    }
-    public String getAgeInMonths() {
-        Period period = Period.between(LocalDate.now(), birthDay);
-        return String.format("%d", period.getMonths());
-    }
-
     public String toString() {
         String string = "";
-        if(this.sex == Gender.Female){
+        if(super.getGender() == Gender.Female){
             string = "Кошка";
         } else {
             string = "Кот";
@@ -47,60 +35,37 @@ public class Cat extends Pet{
         return string;
     }
 
-    @Override
-    public String getInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.toString());
-        sb.append("\n");
-        sb.append(this.getAge());
-        sb.append("\n");
-        sb.append(this.showCommands());
-        return sb.toString();
-    }
-
-   
-  
-
-    @Override
-    public String setCommand(String value) {
-        try{
-            commandsList.add(value);
-            return String.format("Комманда %s добавлена", value);
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-    @Override
-    public String showCommands() {
-        if (this.commandsList.isEmpty()){
-            return "Список комманд пуст\n";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("Список комманд:\n");
-        for (String string : commandsList) {
-            sb.append(string);
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-    public void setBirthDate(LocalDate value){
-        this.birthDay = value;
-    }
-
-    public void setGender (Gender gender) {
-        this.sex = gender;
-    }
-
-    public Gender getGender() {
-        return this.sex;
-    }
-    @Override
-    public ArrayList<String> getCommandList() {
-        return this.commandsList;
-    }
-    @Override
-    public LocalDate getBirthDate() {
-        return this.birthDay;
-    }
-
+    public ArrayList<String> getCommands() {
+        return this.list;
+     }
+ 
+     @Override
+     public String setCommand(String value) {
+         try{
+             list.add(value);
+             return String.format("Комманда %s добавлена", value);
+         } catch (Exception e) {
+             return e.getMessage();
+         }
+     }
+     @Override
+     public String showCommands() {
+         if (this.list.isEmpty()){
+             return "Список комманд пуст\n";
+         }
+         StringBuilder sb = new StringBuilder();
+         sb.append("Список комманд:\n");
+         for (String string : list) {
+             sb.append(string);
+             sb.append("\n");
+         }
+         return sb.toString();
+     }
+ 
+     
+ 
+     @Override
+     public ArrayList<String> getCommandList() {
+         return this.list;
+     }
 }
